@@ -1,6 +1,8 @@
 plugins {
   alias(libs.plugins.androidApplication)
   alias(libs.plugins.jetbrainsKotlinAndroid)
+  kotlin("kapt")
+  alias(libs.plugins.hilt)
 }
 
 android {
@@ -21,8 +23,11 @@ android {
   }
 
   buildTypes {
-    release {
+    debug {
       isMinifyEnabled = false
+    }
+    release {
+      isMinifyEnabled = true
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
   }
@@ -46,6 +51,11 @@ android {
   }
 }
 
+// Allow references to generated code
+kapt {
+  correctErrorTypes = true
+}
+
 dependencies {
 
   implementation(libs.androidx.core.ktx)
@@ -56,6 +66,18 @@ dependencies {
   implementation(libs.androidx.ui.graphics)
   implementation(libs.androidx.ui.tooling.preview)
   implementation(libs.androidx.material3)
+
+  implementation(libs.retrofit)
+  implementation(libs.retrofit.converter)
+
+  implementation(libs.okhttp)
+  implementation(libs.okhttp.logger)
+
+  implementation(libs.gson)
+
+  implementation(libs.dagger.hilt)
+  kapt(libs.dagger.hilt.compiler)
+
   testImplementation(libs.junit)
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso.core)
